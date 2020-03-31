@@ -3,13 +3,26 @@ package main
 import (
 	"fmt"
 	"io"
+	"net"
 	"net/http"
+	"time"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	url := "http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png"
-	
-	resp, err := http.Get(url)
+
+	timeout := time.Duration(5) * time.Second
+	transport := &http.Transport{
+		ResponseHeaderTimeout: timeout,
+		Dial: func(network, addr string) (net.Conn, error) {
+			return net.DialTimeout(network, addr, timeout)
+		},
+		DisableKeepAlives: true,
+	}
+	client := &http.Client{
+		Transport: transport,
+	}
+	resp, err := client.Get(url)
 	if err != nil {
 		fmt.Println(err)
 	}
