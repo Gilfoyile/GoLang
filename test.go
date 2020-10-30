@@ -42,6 +42,6 @@ func main() {
 	err := http.ListenAndServe(":8000", nil)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err.Error());
 	}
 }
