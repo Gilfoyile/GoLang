@@ -11,7 +11,10 @@ type NewsAggPage struct {
 	News string
 }
 
-func newsAggHandler(w http.ResponseWriter, r *http.Request){
+err :=func newsAggHandler(w http.ResponseWriter, r *http.Request){
+	if err!=nil{
+		return "Error occured"
+	}
 	p := NewsAggPage{Title : "The Amazing News" , News : "Some News"}
 	t,_ :=template.ParseFiles("basictemplating.html")
 	t.Execute(w,p)
